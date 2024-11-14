@@ -1,0 +1,11 @@
+{% extends "user/admin_dashboard.html" %}
+{% block title %}搜索玩具类型{% endblock %}
+
+{% block content %}
+    <h2 class="mt-4">搜索玩具类型</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="query" placeholder="输入玩具类型名称">
+        <button type="submit" class="btn btn-primary">搜索</button>
+    </form>
+{% endblock %}

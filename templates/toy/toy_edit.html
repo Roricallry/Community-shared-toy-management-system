@@ -1,0 +1,32 @@
+{% extends "user/admin_dashboard.html" %}
+{% load static %}
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">编辑玩具</h2>
+        <form method="post" action="{% url 'toy_edit' toy.id %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">名称</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ toy.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="type">类型</label>
+                <input type="text" class="form-control" id="type" name="type" value="{{ toy.type }}" required>
+            </div>
+            <div class="form-group">
+                <label for="donor">捐赠人</label>
+                <input type="text" class="form-control" id="donor" name="donor" value="{{ toy.toy_donor }}" required>
+            </div>
+            <div class="form-group">
+                <label for="applicable_age">适用年龄</label>
+                <input type="number" class="form-control" id="applicable_age" name="applicable_age" value="{{ toy.applicable_age }}" required>
+            </div>
+            <div class="form-group">
+                <label for="image_path">图片路径</label>
+                <input type="text" class="form-control" id="image_path" name="image_path" value="{{ toy.image_path|cut:"image/" }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">保存</button>
+        </form>
+    </div>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock %}

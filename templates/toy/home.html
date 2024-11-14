@@ -1,0 +1,41 @@
+{% include 'toy/base.html' %}
+{% load static %}
+{% block main %}
+    <div class="jumbotron text-center">
+        <h1 class="display-4">欢迎来到玩具共享系统!</h1>
+        <p class="lead">在这里，您可以分享您的玩具，找到您喜欢的玩具，并与其他人一起玩乐。</p>
+        <hr class="my-3">
+        <p>马上加入我们，探索更多乐趣。</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'announcement_user' %}" role="button">查看公告</a>
+    </div>
+
+    <!-- 玩具展示 -->
+    <div class="container">
+        <h2 class="text-center mb-4">热门玩具</h2>
+        <div class="row">
+            <!-- 使用 Django 模板语言循环展示玩具 -->
+            {% for toy in toy_show %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{% static toy.image_path %}" class="card-img-top" alt="{{ toy.name }}">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">{{ toy.name }}</h5>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <p class="card-text border">{{ toy.type }}</p>
+                                <p class="card-text">适用年龄段{{ toy.applicable_age }}+</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap JS 和 jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
+

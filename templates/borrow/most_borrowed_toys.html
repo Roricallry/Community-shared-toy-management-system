@@ -1,0 +1,69 @@
+{% extends "user/admin_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container mt-4">
+        <h2>玩具类型借用统计</h2>
+{#        <ul class="list-group">#}
+{#            {% for item in borrow_counts %}#}
+{#                <li class="list-group-item d-flex justify-content-between align-items-center">#}
+{#                    <div>#}
+{#                        <strong>{{ item.type }}</strong>({{ item.toy_count }})#}
+{#                    </div>#}
+{#                    <span class="badge badge-secondary badge-pill">借用次数{{ item.borrow_count }}</span>#}
+{#                </li>#}
+{#            {% endfor %}#}
+{#        </ul>#}
+        <canvas id="borrowChart" width="150" height="50"></canvas>
+    </div>
+
+    <div class="container mt-4">
+        <h1>玩具借用统计</h1>
+        <ul class="list-group">
+            {% for toy in toy_details %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>{{ toy.name }}</strong> ({{ toy.type }})
+                    </div>
+                    <span class="badge badge-primary badge-pill">借用次数{{ toy.borrow_count }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('borrowChart').getContext('2d');
+            const borrowChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [{% for item in borrow_counts %}'{{ item.type }}',{% endfor %}],
+                    datasets: [{
+                        label: '借用次数',
+                        data: [{% for item in borrow_counts %}{{ item.borrow_count }}, {% endfor %}],
+                        backgroundColor: 'rgba(75, 192, 192)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: '玩具个数',
+                        data: [{% for item in borrow_counts %}{{ item.toy_count }}, {% endfor %}],
+                        backgroundColor: 'rgba(275, 292, 192)',
+                        borderColor: 'rgba(275, 292, 192)',
+                        borderWidth: 1
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

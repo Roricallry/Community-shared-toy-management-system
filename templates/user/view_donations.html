@@ -1,0 +1,64 @@
+{% extends 'toy/base.html' %}
+{% load static %}
+
+{% block main %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">捐赠记录</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">捐赠记录</h5>
+                </div>
+                <div class="card-body">
+                    {% if donations %}
+                        <ul class="list-group">
+                            {% for donation in donations %}
+                                <li class="list-group-item">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <img src="{% static '' %}{{ donation.image_path }}" alt="{{ donation.name }}" class="img-fluid">
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div class="row mb-2">
+                                                <div class="col-sm-4 text-right">
+                                                    <strong>玩具名称:</strong>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {{ donation.name }}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-sm-4 text-right">
+                                                    <strong>玩具类型:</strong>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {{ donation.type }}
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col-sm-4 text-right">
+                                                    <strong>适用年龄:</strong>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {{ donation.applicable_age }}+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-center">暂无捐赠记录</p>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- 返回个人主页按钮 -->
+            <div class="text-right mt-3">
+                <a href="{% url 'personal_homepage' %}" class="btn btn-primary">返回上一主页</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

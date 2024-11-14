@@ -1,0 +1,40 @@
+{% extends "user/admin_dashboard.html" %}
+{% load static %}
+{% block title %}玩具类型{% endblock %}
+
+{% block content %}
+    <h2 class="mt-4">玩具类型</h2>
+    <div class="d-flex justify-content-between mt-3 mb-3">
+        <form method="post" action="{% url 'Toy_Search' %}" class="form-inline d-flex">
+            {% csrf_token %}
+            <input type="text" class="form-control mr-2" id="query" name="query" placeholder="搜索玩具类型">
+            <button type="submit" class="btn btn-primary">搜索</button>
+
+        </form>
+        {#        <a href="{% url 'Toy_Inquire' %}" class="btn btn-success btn-sm align-self-start">返回主页面</a>#}
+        {#        <a href="{% url 'Toy_Create' %}" class="btn btn-success btn-sm align-self-start">添加玩具类型</a>#}
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <a href="{% url 'Toy_Inquire' %}" class="btn btn-warning btn-sm">返回主页面</a>
+            <a href="{% url 'Toy_Create' %}" class="btn btn-success btn-sm" style="margin-left: 10px;">添加玩具类型</a>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>名称</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for toy_type in toy_types %}
+            <tr>
+                <td>{{ toy_type.name }}</td>
+                <td>
+                    <a href="{% url 'Toy_Update' toy_type.id %}" class="btn btn-warning btn-sm">编辑</a>
+                    <a href="{% url 'Toy_Delete' toy_type.id %}" class="btn btn-danger btn-sm">删除</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

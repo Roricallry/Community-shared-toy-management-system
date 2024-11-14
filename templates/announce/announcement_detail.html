@@ -1,0 +1,15 @@
+{% extends "user/admin_dashboard.html" %}
+{% load static %}
+
+{% block content %}
+    <h2 class="mt-4">公告详情</h2>
+    <div class="card">
+        <div class="card-header">
+            {{ announcement.title }}
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ announcement.content }}</p>
+            <a href="{% url 'login_admin' %}" class="btn btn-primary">返回公告列表</a>
+        </div>
+    </div>
+{% endblock %}

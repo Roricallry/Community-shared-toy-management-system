@@ -1,0 +1,32 @@
+{% extends "user/admin_dashboard.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">修改用户信息</h1>
+    <form method="post" action="{% url 'edit_user' user.id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">姓名</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ user.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}" required>
+        </div>
+        <div class="form-group">
+            <label for="email">邮箱</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+        </div>
+        <div class="form-group">
+            <label for="telephone">电话</label>
+            <input type="text" class="form-control" id="telephone" name="telephone" value="{{ user.phone }}" required>
+        </div>
+        <button type="submit" class="btn btn-success">保存更改</button>
+        <a href="{% url 'manage_owners' %}" class="btn btn-secondary">取消</a>
+    </form>
+</div>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

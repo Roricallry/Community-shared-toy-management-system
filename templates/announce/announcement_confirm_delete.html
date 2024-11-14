@@ -1,0 +1,13 @@
+{% extends "user/admin_dashboard.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">确认删除公告</h1>
+    <p>你确定要删除这个公告吗？</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">删除</button>
+        <a href="{% url 'announcement' %}" class="btn btn-secondary">取消</a>
+    </form>
+</div>
+{% endblock %}

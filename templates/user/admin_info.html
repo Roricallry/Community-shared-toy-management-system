@@ -1,0 +1,95 @@
+{% extends 'user/admin_dashboard.html' %}
+{% load static %}
+{% block content %}
+    <div class="container mt-5">
+    <h2 class="text-center mb-4">个人主页</h2>
+    <div class="row justify-content-center">
+    <div class="col-md-8">
+    <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">用户信息</h5>
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">登出</button>
+            </form>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-sm-4 text-right">
+                    <strong>名字:</strong>
+                </div>
+                <div class="col-sm-8">
+                    {{ user.name }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 text-right">
+                    <strong>用户名:</strong>
+                </div>
+                <div class="col-sm-8">
+                    {{ user.username }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 text-right">
+                    <strong>电话:</strong>
+                </div>
+                <div class="col-sm-8">
+                    {{ user.phone }}
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 text-right">
+                    <strong>邮箱:</strong>
+                </div>
+                <div class="col-sm-8">
+                    {{ user.email }}
+                    <button type="button" class="btn btn-link p-0 ml-2" data-toggle="modal"
+                            data-target="#editContactModal">
+                        编辑联系方式
+                    </button>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-4 text-right">
+                    <strong>密码:</strong>
+                </div>
+                <div class="col-sm-8">
+                    ********
+                    <a href="{% url 'change_password' %}" class="btn btn-link">修改密码</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <div class="modal fade" id="editContactModal" tabindex="-1" aria-labelledby="editContactModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editContactModalLabel">修改联系方式</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'change_contact_information' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">电话:</label>
+                            <input type="text" class="form-control" id="phone" name="phone" value="{{ user.phone }}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">邮箱:</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">保存更改</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

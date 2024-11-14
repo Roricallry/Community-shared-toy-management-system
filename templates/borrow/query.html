@@ -1,0 +1,134 @@
+{% extends 'toy/base.html' %}
+{% load static %}
+
+{% block main %}
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between">
+            <h1 class="mb-4">借用记录列表</h1>
+            <form method="get" action="{% url 'personal_homepage' %}">
+                <button type="submit" class="btn btn-primary mx-2">返回上一页</button>
+            </form>
+        </div>
+
+        <form method="get" class="mb-4" action="{% url 'borrow_query' %}">
+            <div class="form-row">
+                <div class="form-group col-md-1">
+                    <label for="toy_id">玩具ID</label>
+                    <input type="text" class="form-control" id="toy_id" name="toy_id" value="{{ request.GET.toy_id }}">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="toy_id">玩具名</label>
+                    <input type="text" class="form-control" id="toy_name" name="toy_name" value="{{ request.GET.toy_name }}">
+                </div>
+                <div class="form-group col-md-1">
+                    <label for="is_borrowed">类型</label>
+                    <select class="form-control" id="is_borrowed" name="toy_type">
+                        <option value=""></option>
+                        {% for type in toy_types %}
+                            <option value="{{ type.name }}" name="toy_type"
+                                    {% if type.name == request.GET.toy_type %}selected{% endif %}>{{ type.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% if user.type == 1 %}
+                    <div class="form-group col-md-2">
+                        <label for="username">用户名</label>
+                        <input type="text" class="form-control" id="username" name="username"
+                               value="{{ request.GET.username }}">
+                    </div>
+                {% endif %}
+                <div class="form-group col-md-3">
+                    <label for="advance_year">预借时间</label>
+                    <div class="d-flex">
+                        <input type="text" class="form-control me-2" id="advance_year" name="advance_year"
+                               placeholder="年" value="{{ request.GET.advance_year }}">
+                        <input type="text" class="form-control me-2" id="advance_month" name="advance_month"
+                               placeholder="月" value="{{ request.GET.advance_month }}">
+                        <input type="text" class="form-control" id="advance_day" name="advance_day" placeholder="日"
+                               value="{{ request.GET.advance_day }}">
+                    </div>
+                </div>
+                <div class="form-group col-md-1">
+                    <label for="is_borrowed">是否借出</label>
+                    <select class="form-control" id="is_borrowed" name="is_borrowed">
+                        <option value=""></option>
+                        <option value="true" {% if request.GET.is_borrowed == "true" %}selected{% endif %}>是</option>
+                        <option value="false" {% if request.GET.is_borrowed == "false" %}selected{% endif %}>否</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-1">
+                    <label for="is_returned">是否归还</label>
+                    <select class="form-control" id="is_returned" name="is_returned">
+                        <option value=""></option>
+                        <option value="true" {% if request.GET.is_returned == "true" %}selected{% endif %}>是</option>
+                        <option value="false" {% if request.GET.is_returned == "false" %}selected{% endif %}>否</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-1 align-self-end">
+                    <button type="submit" class="btn btn-primary">搜索</button>
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>玩具ID</th>
+                <th>玩具名</th>
+                <th>玩具类型</th>
+                <th>借用人</th>
+                <th>预借时间</th>
+                <th>借阅时间</th>
+                <th>归还时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for borrow in borrows %}
+                <tr>
+                    <td>{{ borrow.toy_id }}</td>
+                    <td>{{ borrow.name }}</td>
+                    <td>{{ borrow.type }}</td>
+                    <td>{{ borrow.toy_borrow }}</td>
+                    <td>{{ borrow.advance_time }}</td>
+                    <td>{{ borrow.borrow_time }}</td>
+                    <td>{{ borrow.return_time }}</td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            <form method="POST" action="{% url 'borrow_cancel' %}" onsubmit="return confirmDelete();">
+                                {% csrf_token %}
+                                <input type="hidden" name="toy_id" value="{{ borrow.toy_id }}">
+                                <input type="hidden" name="advance_time"
+                                       value="{{ borrow.advance_time|date:"Y-m-d H:i:s.u" }}">
+                                <input type="hidden" name="borrow_time" value="{{ borrow.borrow_time }}">
+                                {% if user.type == 1 %}
+                                    <button type="submit" class="btn btn-warning mx-2">删除记录</button>
+                                {% elif user.type == 0 %}
+                                    {% if borrow.borrow_time %}
+                                        {% if borrow.return_time %}
+                                        {% else %}
+                                            <div class="text-danger">未归还</div>
+                                        {% endif %}
+                                    {% else %}
+                                        <button type="submit" class="btn btn-warning mx-2">取消预约</button>
+                                    {% endif %}
+                                {% endif %}
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function confirmDelete() {
+            return confirm('你确定要取消预约吗？');
+        }
+    </script>
+{% endblock %}

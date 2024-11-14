@@ -1,0 +1,13 @@
+{% extends "user/admin_dashboard.html" %}
+{% block title %}添加玩具类型{% endblock %}
+
+{% block content %}
+    <h2 class="mt-4">添加玩具类型</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">保存</button>
+        <a href="{% url 'Toy_Inquire' %}" class="btn btn-secondary">取消</a>
+    </form>
+{% endblock %}
+

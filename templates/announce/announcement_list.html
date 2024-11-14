@@ -1,0 +1,31 @@
+{% extends "user/admin_dashboard.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">公告管理</h1>
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{% url 'announcement_create' %}" class="btn btn-success">添加公告</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>标题</th>
+                <th>内容</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for announcement in announcements %}
+                <tr>
+                    <td>{{ announcement.title }}</td>
+                    <td>{{ announcement.content }}</td>
+                    <td>
+                        <a href="{% url 'announcement_update' announcement.id %}" class="btn btn-warning btn-sm">编辑</a>
+                        <a href="{% url 'announcement_delete' announcement.id %}" class="btn btn-danger btn-sm">删除</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
